@@ -9,6 +9,7 @@
     Pour afficher la résolution d'un image, il faut faire comme ceci :
     
     > i.show_resolution()
+    
     résultat : 
 >>3 x 3
 
