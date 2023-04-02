@@ -1,4 +1,32 @@
 class Fimg:
+    """
+    Classe python représentant une image dans le cadre de l'édition 2023 du TFJM²
+
+    Pour créer une nouvelle image, il faut faire comme ceci : 
+
+>>> i = Fimg([[1,2,3],[4,5,6],[7,8,9]])
+
+    Pour afficher la résolution d'un image, il faut faire comme ceci :
+    
+>>> i.show_resolution()
+
+3 x 3
+
+    Pour afficher une image, il faut faire comme ceci : 
+
+>>>i.show()
+
+1 2 3
+4 5 6
+7 8 9
+
+    Pour changer la résolution d'un image, il faut faire comme ceci : 
+    
+>>> i.scale(2,2)
+
+
+"""
+    
     def __init__(self, img):
         self.img = img
         self.height = len(img)
