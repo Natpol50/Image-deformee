@@ -11,7 +11,7 @@
     
     i.show_resolution()
     
-    résultat : 
+résultat : 
     
     3 x 3
 
