@@ -73,7 +73,15 @@ class Fimg:
             for j in range(m):
                 rtd_lst[m-j-1][i] = lst[i][j]
         return rtd_lst
-    
+    def noitator(self, tsl):   #fonction inverse de rotation, je me suis aussi amusé à inversé les noms, car drôle
+        l = len(tsl)
+        m = len(tsl[0])
+        dtr_tsl = [[0 for j in range(l)] for i in range(m)]
+        for i in range(l):
+            for j in range(m):
+                dtr_tsl[j][l-i-1] = tsl[i][j]
+        return dtr_tsl
+
     def scale(self, new_height, new_width):
         for i in range (0,len(self.img)):
             f = Faudio_lite(self.img[i])
@@ -90,7 +98,7 @@ class Fimg:
             for val in f.file.values():
                 j.append(val)
                 self.img[i] = j
-            
+        self.img = self.noitator(self.img)
         
     def show(self):
         for row in self.img:
