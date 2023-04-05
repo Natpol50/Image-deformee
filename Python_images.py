@@ -1,3 +1,36 @@
+class Faudio_lite:
+    """
+    Version lite (ayant toutes les commandes inutiles pour Fimg retirée) de la classe Faudio qui peux être trouvée dans https://github.com/Natpol50/Musique-deformee
+    """
+    def __init__(self,notes):
+        self.res = len(notes)
+        self.file =  {}
+        count = 1
+        for i in range(0, self.res):
+            self.file[f"{count}/{self.res}"] = notes[i]
+            count += 1
+    
+    def value(self, pos, res):
+        pos = 2*pos-1
+        res_2 = 2*res
+        for i in range(0, self.res):
+            if (i+1)/self.res < pos/res_2:
+                True
+            elif (i+1)/self.res > pos/res_2:
+                return self.file[f"{(i+1)}/{self.res}"]
+            elif (i+1)/self.res == pos/res_2:
+                return 0
+    
+    def changement_de_resolution(self, m):
+        self.new = {}
+        count2 = 1
+        for i in range(0, m):
+            self.new[f"{count2}/{m}"] = self.value(count2, m)
+            count2 += 1
+        self.file = self.new
+        self.res = m
+
+
 class Fimg:
     """
     Classe python représentant une image dans le cadre de l'édition 2023 du TFJM²
@@ -31,31 +64,33 @@ class Fimg:
         self.img = img
         self.height = len(img)
         self.width = len(img[0])
-
+        
+    def rotation(self,lst):
+        n = len(lst)
+        m = len(lst[0])
+        rtd_lst = [[0 for j in range(n)] for i in range(m)]
+        for i in range(n):
+            for j in range(m):
+                rtd_lst[m-j-1][i] = lst[i][j]
+        return rtd_lst
+    
     def scale(self, new_height, new_width):
-        new_img = []
-        for i in range(new_height):
-            row = []
-            for j in range(new_width):
-                # trouver les coordonnées du pixel correspondant dans l'image originale
-                x = int((j + 0.5) * self.width / new_width)
-                y = int((i + 0.5) * self.height / new_height)
-                if x >= self.width - 1 or y >= self.height - 1:
-                    row.append(0)
-                else:
-                    # vérifier si le pixel est situé exactement entre deux pixels dans l'image originale
-                    if abs((j + 0.5) * self.width / new_width - x - 0.5) < 0.001 and abs((i + 0.5) * self.height / new_height - y - 0.5) < 0.001:
-                        row.append(0)
-                    else:
-                        # calculer la valeur du pixel dans l'image redimensionnée en interpolant les pixels adjacents
-                        a = (j + 0.5) * self.width / new_width - x - 0.5
-                        b = (i + 0.5) * self.height / new_height - y - 0.5
-                        value = (1 - a) * (1 - b) * self.img[y][x] + a * (1 - b) * self.img[y][x + 1] + (1 - a) * b * self.img[y + 1][x] + a * b * self.img[y + 1][x + 1]
-                        row.append(int(value))
-            new_img.append(row)
-        self.img = new_img
-        self.height = new_height
-        self.width = new_width
+        for i in range (0,len(self.img)):
+            f = Faudio_lite(self.img[i])
+            f.changement_de_resolution(new_width)
+            j = []
+            for val in f.file.values():
+                j.append(val)
+                self.img[i] = j
+        self.img = self.rotation(self.img)
+        for i in range (0,len(self.img)):
+            f = Faudio_lite(self.img[i])
+            f.changement_de_resolution(new_height)
+            j = []
+            for val in f.file.values():
+                j.append(val)
+                self.img[i] = j
+            
         
     def show(self):
         for row in self.img:
@@ -65,3 +100,4 @@ class Fimg:
 
     def show_resolution(self):
         print(f"{self.width}x{self.height}")
+
